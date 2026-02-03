@@ -1,12 +1,15 @@
 require('dotenv').config();
-const { Pool } = require('pg');
+const mysql = require('mysql2/promise');
 
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_HOST,
-  database: process.env.DB_DATABASE,
-  password: process.env.DB_PASSWORD,
-  port: process.env.DB_PORT,
+const pool = mysql.createPool({
+  user: process.env.MYSQL_DB_USER,
+  host: process.env.MYSQL_DB_HOST,
+  database: process.env.MYSQL_DB_DATABASE,
+  password: process.env.MYSQL_DB_PASSWORD,
+  port: process.env.MYSQL_DB_PORT,
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0,
 });
 
 module.exports = { pool };
