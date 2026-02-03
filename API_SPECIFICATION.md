@@ -5,6 +5,7 @@
 ---
 
 ## 목차
+
 1. [할일 조회](#1-할일-조회)
 2. [할일 생성](#2-할일-생성)
 3. [할일 수정](#3-할일-수정)
@@ -23,9 +24,9 @@
 GET /get_tasks/:userId
 ```
 
-| 파라미터 | 타입 | 위치 | 필수 | 설명 |
-|----------|------|------|------|------|
-| userId | string | path | O | 사용자 ID (Google OAuth sub) |
+| 파라미터 | 타입   | 위치 | 필수 | 설명                         |
+| -------- | ------ | ---- | ---- | ---------------------------- |
+| userId   | string | path | O    | 사용자 ID (Google OAuth sub) |
 
 ### Response
 
@@ -77,20 +78,21 @@ POST /post_task
 ```
 
 **Headers**
+
 ```
 Content-Type: application/json
 ```
 
 **Body**
 
-| 필드 | 타입 | 필수 | 설명 |
-|------|------|------|------|
-| title | string | O | 할일 제목 |
-| description | string | O | 할일 설명 |
-| date | string | O | 할일 날짜 (YYYY-MM-DD) |
-| isCompleted | boolean | O | 완료 여부 |
-| isImportant | boolean | O | 중요 여부 |
-| userId | string | O | 사용자 ID (Google OAuth sub) |
+| 필드        | 타입    | 필수 | 설명                         |
+| ----------- | ------- | ---- | ---------------------------- |
+| title       | string  | O    | 할일 제목                    |
+| description | string  | O    | 할일 설명                    |
+| date        | string  | O    | 할일 날짜 (YYYY-MM-DD)       |
+| isCompleted | boolean | O    | 완료 여부                    |
+| isImportant | boolean | O    | 중요 여부                    |
+| userId      | string  | O    | 사용자 ID (Google OAuth sub) |
 
 ```json
 {
@@ -129,6 +131,7 @@ curl -X POST http://localhost:8000/post_task \
 ```
 
 ### Notes
+
 - `_id`는 서버에서 UUID로 자동 생성됩니다.
 - `created_at`, `updated_at`은 자동으로 현재 시간이 설정됩니다.
 
@@ -145,20 +148,21 @@ PUT /update_task
 ```
 
 **Headers**
+
 ```
 Content-Type: application/json
 ```
 
 **Body**
 
-| 필드 | 타입 | 필수 | 설명 |
-|------|------|------|------|
-| _id | string | O | 할일 고유 ID (UUID) |
-| title | string | O | 수정할 제목 |
-| description | string | O | 수정할 설명 |
-| date | string | O | 수정할 날짜 (YYYY-MM-DD) |
-| isCompleted | boolean | O | 완료 여부 |
-| isImportant | boolean | O | 중요 여부 |
+| 필드        | 타입    | 필수 | 설명                     |
+| ----------- | ------- | ---- | ------------------------ |
+| \_id        | string  | O    | 할일 고유 ID (UUID)      |
+| title       | string  | O    | 수정할 제목              |
+| description | string  | O    | 수정할 설명              |
+| date        | string  | O    | 수정할 날짜 (YYYY-MM-DD) |
+| isCompleted | boolean | O    | 완료 여부                |
+| isImportant | boolean | O    | 중요 여부                |
 
 ```json
 {
@@ -197,6 +201,7 @@ curl -X PUT http://localhost:8000/update_task \
 ```
 
 ### Notes
+
 - `updated_at` 필드는 트리거에 의해 자동으로 현재 시간으로 갱신됩니다.
 
 ---
@@ -212,16 +217,17 @@ PATCH /update_completed_task
 ```
 
 **Headers**
+
 ```
 Content-Type: application/json
 ```
 
 **Body**
 
-| 필드 | 타입 | 필수 | 설명 |
-|------|------|------|------|
-| itemId | string | O | 할일 고유 ID (UUID) |
-| isCompleted | boolean | O | 변경할 완료 상태 |
+| 필드        | 타입    | 필수 | 설명                |
+| ----------- | ------- | ---- | ------------------- |
+| itemId      | string  | O    | 할일 고유 ID (UUID) |
+| isCompleted | boolean | O    | 변경할 완료 상태    |
 
 ```json
 {
@@ -252,6 +258,7 @@ curl -X PATCH http://localhost:8000/update_completed_task \
 ```
 
 ### Notes
+
 - 완료 상태만 빠르게 토글할 때 사용합니다.
 - 전체 수정이 필요한 경우 `PUT /update_task`를 사용하세요.
 
@@ -267,9 +274,9 @@ curl -X PATCH http://localhost:8000/update_completed_task \
 DELETE /delete_task/:itemId
 ```
 
-| 파라미터 | 타입 | 위치 | 필수 | 설명 |
-|----------|------|------|------|------|
-| itemId | string | path | O | 할일 고유 ID (UUID) |
+| 파라미터 | 타입   | 위치 | 필수 | 설명                |
+| -------- | ------ | ---- | ---- | ------------------- |
+| itemId   | string | path | O    | 할일 고유 ID (UUID) |
 
 ### Response
 
@@ -342,13 +349,13 @@ EXECUTE FUNCTION update_updated_at_column();
 
 ## API 요약
 
-| Method | Endpoint | 설명 |
-|--------|----------|------|
-| GET | `/get_tasks/:userId` | 사용자의 모든 할일 조회 |
-| POST | `/post_task` | 새 할일 생성 |
-| PUT | `/update_task` | 할일 전체 수정 |
-| PATCH | `/update_completed_task` | 완료 상태만 수정 |
-| DELETE | `/delete_task/:itemId` | 할일 삭제 |
+| Method | Endpoint                 | 설명                    |
+| ------ | ------------------------ | ----------------------- |
+| GET    | `/get_tasks/:userId`     | 사용자의 모든 할일 조회 |
+| POST   | `/post_task`             | 새 할일 생성            |
+| PUT    | `/update_task`           | 할일 전체 수정          |
+| PATCH  | `/update_completed_task` | 완료 상태만 수정        |
+| DELETE | `/delete_task/:itemId`   | 할일 삭제               |
 
 ---
 
@@ -408,22 +415,9 @@ export const deleteRequest = async (url, options) => {
 
 ## 서버 설정
 
-### 환경 변수 (.env)
-
-```env
-PORT=8000
-
-# PostgreSQL
-DB_HOST=98.84.30.243
-DB_PORT=5432
-DB_USER=postgres
-DB_PASSWORD=postgres
-DB_DATABASE=postgres
-```
-
 ### CORS 설정
 
 ```javascript
 const cors = require('cors');
-app.use(cors());  // 모든 origin 허용
+app.use(cors()); // 모든 origin 허용
 ```
