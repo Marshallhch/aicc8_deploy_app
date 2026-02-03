@@ -3,9 +3,17 @@ import {
   POST_TASK_API_URL,
   GET_TASKS_API_URL,
   UPDATE_COMPLETED_TASK_API_URL,
+  DELETE_TASK_API_URL,
+  UPDATE_TASK_API_URL,
 } from '../../utils/apiUrls';
 
-import { getRequest, patchRequest, postRequest } from '../../utils/requests';
+import {
+  deleteRequest,
+  getRequest,
+  patchRequest,
+  postRequest,
+  putRequest,
+} from '../../utils/requests';
 
 // 공통된 비동기 액션 생성 로직을 별도의 함수로 분리
 const postItemFetchThunk = (actionType, apiURL) => {
@@ -32,6 +40,30 @@ const updateCompletedFetchThunk = (actionType, apiURL) => {
   });
 };
 
+const putTaskFetchThunk = (actionType, apiURL) => {
+  return createAsyncThunk(actionType, async (updateData) => {
+    const options = {
+      body: JSON.stringify(updateData),
+    };
+    return await putRequest(apiURL, options);
+  });
+};
+
+const deleteItemFetchThunk = (actionType, apiURL) => {
+  return createAsyncThunk(actionType, async (itemId) => {
+    const options = {
+      method: 'DELETE',
+    };
+    const fullPath = `${apiURL}/${itemId}`;
+    return await deleteRequest(fullPath, options);
+  });
+};
+
+export const fetchDeleteItem = deleteItemFetchThunk(
+  'fetchDeleteItem',
+  DELETE_TASK_API_URL,
+);
+
 export const fetchGetItem = getItemFetchThunk(
   'fetchVisitors',
   GET_TASKS_API_URL,
@@ -49,6 +81,12 @@ export const fetchUpdateCompleted = updateCompletedFetchThunk(
   UPDATE_COMPLETED_TASK_API_URL,
 );
 
+// Put Task Data Fetch
+export const fetchPutTaskItem = putTaskFetchThunk(
+  'fetchPutTaskItem',
+  UPDATE_TASK_API_URL,
+);
+
 const handleFulfilled = (stateKey) => (state, action) => {
   state[stateKey] = action.payload;
 };
@@ -63,6 +101,8 @@ const apisSlice = createSlice({
     postItemData: null,
     getItemData: null,
     updateCompletedData: null,
+    deleteItemData: null,
+    putTaskData: null,
   },
   extraReducers: (builder) => {
     builder
@@ -76,7 +116,13 @@ const apisSlice = createSlice({
         fetchUpdateCompleted.fulfilled,
         handleFulfilled('updateCompletedData'),
       )
-      .addCase(fetchUpdateCompleted.rejected, handleRejected);
+      .addCase(fetchUpdateCompleted.rejected, handleRejected)
+
+      .addCase(fetchDeleteItem.fulfilled, handleFulfilled('deleteItemData'))
+      .addCase(fetchDeleteItem.rejected, handleRejected)
+
+      .addCase(fetchPutTaskItem.fulfilled, handleFulfilled('putTaskData'))
+      .addCase(fetchPutTaskItem.rejected, handleRejected);
   },
 });
 
